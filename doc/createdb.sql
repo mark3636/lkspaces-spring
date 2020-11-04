@@ -1,0 +1,5 @@
+CREATE DATABASE lkplaces;
+
+CREATE USER lkplaces_adm WITH ENCRYPTED PASSWORD 'root';
+
+GRANT ALL PRIVILEGES ON DATABASE lkplaces TO lkplaces_adm;

@@ -28,6 +28,7 @@ CREATE TABLE tbl_map_marker
     lat NUMERIC NOT NULL,
     label VARCHAR(255) NOT NULL,
     description TEXT,
+    status VARCHAR(255) NOT NULL,
     id_place_type INT NOT NULL,
     FOREIGN KEY (id_place_type) REFERENCES tbl_place_type(id)
 );
