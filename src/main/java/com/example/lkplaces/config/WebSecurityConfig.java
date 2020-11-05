@@ -5,6 +5,7 @@ import com.example.lkplaces.security.JwtTokenFilter;
 import com.example.lkplaces.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -49,6 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**")
                 .antMatchers("/users/sign-in")
                 .antMatchers("/users/sign-up")
+                .antMatchers(HttpMethod.GET, "/map-markers/**")
+                .antMatchers(HttpMethod.GET, "/posts/**")
+                .antMatchers(HttpMethod.GET, "/place-types/**")
                 .antMatchers("/error");
     }
 }
