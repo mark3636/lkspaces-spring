@@ -3,6 +3,7 @@ package com.example.lkplaces.web.dto;
 import com.example.lkplaces.jpa.enums.EnumRole;
 import com.example.lkplaces.web.validation.ExistingG;
 import com.example.lkplaces.web.validation.NewG;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class UserDto {
     @NotEmpty(groups = {NewG.class})
     private String lastName;
     @NotEmpty(groups = {NewG.class})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private EnumRole role;
 }

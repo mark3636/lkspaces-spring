@@ -1,10 +1,13 @@
 package com.example.lkplaces.converter;
 
+import com.example.lkplaces.jpa.entity.User;
 import com.example.lkplaces.web.dto.UserDto;
 import com.example.lkplaces.web.dto.UserWithTokenDto;
-import com.example.lkplaces.jpa.entity.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserConverter {
@@ -40,5 +43,9 @@ public class UserConverter {
                 .password(user.getPassword())
                 .role(user.getRole())
                 .build();
+    }
+
+    public static List<UserDto> toDtos(List<User> users) {
+        return users.parallelStream().map(UserConverter::toDto).collect(Collectors.toList());
     }
 }

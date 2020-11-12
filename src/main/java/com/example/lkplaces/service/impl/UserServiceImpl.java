@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserDto> getAll() {
+        return UserConverter.toDtos(userRepository.findAll());
     }
 
     @Override
@@ -57,10 +57,10 @@ public class UserServiceImpl implements UserService {
     public UserWithTokenDto signIn(UserDto user) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser == null) {
-            throw new RuntimeException("");
+            throw new RuntimeException("Неправильный логин или пароль");
         }
         if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            throw new RuntimeException("");
+            throw new RuntimeException("Неправильный логин или пароль");
         }
         return UserConverter.toDto(existingUser, jwtTokenProvider.createToken(user.getEmail()));
     }

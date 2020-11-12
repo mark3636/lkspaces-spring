@@ -1,6 +1,5 @@
 package com.example.lkplaces.controller;
 
-import com.example.lkplaces.jpa.entity.User;
 import com.example.lkplaces.service.UserService;
 import com.example.lkplaces.web.dto.UserDto;
 import com.example.lkplaces.web.dto.UserWithTokenDto;
@@ -26,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserDto> getAll() {
         return userService.getAll();
     }
 
