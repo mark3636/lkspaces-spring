@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post changeStatus(Integer id, EnumStatus status) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Пост не найден"));
         post.setStatus(status);
         return postRepository.save(post);
     }

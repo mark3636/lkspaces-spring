@@ -1,6 +1,7 @@
 package com.example.lkplaces.controller;
 
 import com.example.lkplaces.jpa.entity.Post;
+import com.example.lkplaces.jpa.enums.EnumStatus;
 import com.example.lkplaces.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -49,4 +51,8 @@ public class PostController {
         postService.delete(id);
     }
 
+    @PostMapping("/{id}")
+    public Post changeStatus(@PathVariable Integer id, @RequestParam("status") EnumStatus status) {
+        return postService.changeStatus(id, status);
+    }
 }

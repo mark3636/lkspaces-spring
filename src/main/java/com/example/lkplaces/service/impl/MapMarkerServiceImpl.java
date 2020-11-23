@@ -46,7 +46,7 @@ public class MapMarkerServiceImpl implements MapMarkerService {
 
     @Override
     public MapMarker changeStatus(Integer id, EnumStatus status) {
-        MapMarker mapMarker = mapMarkerRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
+        MapMarker mapMarker = mapMarkerRepository.findById(id).orElseThrow(() -> new RuntimeException("Маркер не найден"));
         mapMarker.setStatus(status);
         return mapMarkerRepository.save(mapMarker);
     }
