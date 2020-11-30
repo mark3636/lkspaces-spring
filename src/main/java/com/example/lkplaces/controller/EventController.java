@@ -3,6 +3,7 @@ package com.example.lkplaces.controller;
 import com.example.lkplaces.jpa.entity.Event;
 import com.example.lkplaces.jpa.enums.EnumStatus;
 import com.example.lkplaces.service.EventService;
+import com.example.lkplaces.web.dto.EventDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +38,12 @@ public class EventController {
     }
 
     @PostMapping
-    public Event add(@RequestBody Event event) {
+    public Event add(@RequestBody EventDto event) {
         return eventService.add(event);
     }
 
     @PutMapping("/{id}")
-    public Event update(@RequestBody Event event) {
+    public Event update(@RequestBody EventDto event) {
         return eventService.update(event);
     }
 

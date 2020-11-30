@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PlaceTypeService {
     List<PlaceType> getAll();
+
+    PlaceType getById(Integer id);
 }

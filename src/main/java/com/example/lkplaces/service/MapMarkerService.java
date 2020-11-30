@@ -2,13 +2,14 @@ package com.example.lkplaces.service;
 
 import com.example.lkplaces.jpa.entity.MapMarker;
 import com.example.lkplaces.jpa.enums.EnumStatus;
+import com.example.lkplaces.web.dto.MapMarkerDto;
 
 import java.util.List;
 
 public interface MapMarkerService {
-    MapMarker add(MapMarker marker);
+    MapMarker add(MapMarkerDto marker);
 
-    MapMarker update(MapMarker marker);
+    MapMarker update(MapMarkerDto marker);
 
     void delete(Integer id);
 

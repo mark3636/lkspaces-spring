@@ -3,6 +3,7 @@ package com.example.lkplaces.controller;
 import com.example.lkplaces.jpa.entity.Post;
 import com.example.lkplaces.jpa.enums.EnumStatus;
 import com.example.lkplaces.service.PostService;
+import com.example.lkplaces.web.dto.PostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +38,12 @@ public class PostController {
     }
 
     @PostMapping
-    public Post add(@RequestBody Post post) {
+    public Post add(@RequestBody PostDto post) {
         return postService.add(post);
     }
 
     @PutMapping("/{id}")
-    public Post update(@RequestBody Post post) {
+    public Post update(@RequestBody PostDto post) {
         return postService.update(post);
     }
 

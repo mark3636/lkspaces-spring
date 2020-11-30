@@ -16,11 +16,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class PostDto {
+public class EventDto {
     private Integer id;
     private String label;
     private String description;
+    private String startDate;
+    private String endDate;
     private EnumStatus status;
-    private Integer placeTypeId;
     private Integer mapMarkerId;
 }

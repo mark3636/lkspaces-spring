@@ -23,5 +23,5 @@ public class MapMarkerDto {
     private BigDecimal lat;
     private String label;
     private String description;
-    private PlaceTypeDto placeType;
+    private Integer placeTypeId;
 }

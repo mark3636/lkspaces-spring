@@ -3,6 +3,7 @@ package com.example.lkplaces.controller;
 import com.example.lkplaces.jpa.entity.MapMarker;
 import com.example.lkplaces.jpa.enums.EnumStatus;
 import com.example.lkplaces.service.MapMarkerService;
+import com.example.lkplaces.web.dto.MapMarkerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +38,12 @@ public class MapMarkerController {
     }
 
     @PostMapping
-    public MapMarker add(@RequestBody MapMarker mapMarker) {
+    public MapMarker add(@RequestBody MapMarkerDto mapMarker) {
         return mapMarkerService.add(mapMarker);
     }
 
     @PutMapping("/{id}")
-    public MapMarker update(@RequestBody MapMarker mapMarker) {
+    public MapMarker update(@RequestBody MapMarkerDto mapMarker) {
         return mapMarkerService.update(mapMarker);
     }
 

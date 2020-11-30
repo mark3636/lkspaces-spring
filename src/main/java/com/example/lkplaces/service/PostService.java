@@ -1,15 +1,15 @@
 package com.example.lkplaces.service;
 
 import com.example.lkplaces.jpa.entity.Post;
-import com.example.lkplaces.jpa.entity.User;
 import com.example.lkplaces.jpa.enums.EnumStatus;
+import com.example.lkplaces.web.dto.PostDto;
 
 import java.util.List;
 
 public interface PostService {
-    Post add(Post post);
+    Post add(PostDto post);
 
-    Post update(Post post);
+    Post update(PostDto post);
 
     void delete(Integer id);
 

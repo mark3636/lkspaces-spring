@@ -21,4 +21,13 @@ public class PlaceTypeServiceImpl implements PlaceTypeService {
     public List<PlaceType> getAll() {
         return placeTypeRepository.findAll();
     }
+
+    @Override
+    public PlaceType getById(Integer id) {
+        if (id == null) {
+            throw new RuntimeException("Тип места с id=null не найден");
+        }
+        return placeTypeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Тип места с id=" + id + " не найден"));
+    }
 }
