@@ -19,18 +19,21 @@ repositories {
 	mavenCentral()
 }
 
-//ext {
-//	set('springCloudVersion', "Hoxton.SR8")
-//}
+ext {
+	set('springCloudVersion', "Hoxton.SR8")
+}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation('org.springframework.boot:spring-boot-starter-web') {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	implementation 'org.springframework.boot:spring-boot-starter-jetty'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.liquibase:liquibase-core'
-//	implementation 'org.springframework.cloud:spring-cloud-gcp-starter'
+	implementation 'org.springframework.cloud:spring-cloud-gcp-starter'
 	
 	implementation 'io.jsonwebtoken:jjwt:0.6.0'
 	
@@ -41,17 +44,19 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.2.6.RELEASE'
 }
 
-//dependencyManagement {
-//	imports {
-//		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-//	}
-//}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
 
 appengine {
 	deploy {
-		projectId = 'lkplaces'
+		projectId = 'lkplaces1'
 		version = '1'
 	}
 }
