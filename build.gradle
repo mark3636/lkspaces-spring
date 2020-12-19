@@ -1,7 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'com.google.cloud.tools.appengine' version '2.4.0'
+	id 'lenala.azure.azurewebapp' version '1.0.1'
 	id 'java'
 }
 
@@ -19,48 +19,50 @@ repositories {
 	mavenCentral()
 }
 
-ext {
-	set('springCloudVersion', "Hoxton.SR8")
-}
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation('org.springframework.boot:spring-boot-starter-web') {
-		exclude module: "spring-boot-starter-tomcat"
-	}
-	implementation 'org.springframework.boot:spring-boot-starter-jetty'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.liquibase:liquibase-core'
-	implementation 'org.springframework.cloud:spring-cloud-gcp-starter'
-	
+
 	implementation 'io.jsonwebtoken:jjwt:0.6.0'
 	
 	implementation 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-sql-postgresql', version: '1.2.6.RELEASE'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
-}
-
-appengine {
-	deploy {
-		projectId = 'lkplaces1'
-		version = '1'
 	}
 }
 
 test {
 	useJUnitPlatform()
 }
+
+azureWebApp {
+	resourceGroup = 'lkplaces'
+	appName = 'lkplaces-spring1'
+	appServicePlanName = 'lkplaces-spring1'
+	region = 'westus'
+	stopAppDuringDeployment = 'true'
+
+	appService = {
+		type = 'windows'
+		javaVersion = '1.8'
+		javaWebContainer = 'Java SE'
+		pricingTier = 'F1'
+	}
+
+	authentication = {
+		type = 'azurecli'
+	}
+
+	deployment = {
+		type = 'jar'
+	}
+}
+
+azureWebappDeploy.dependsOn(bootJar)
