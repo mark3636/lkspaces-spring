@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/**/**")
+                .antMatchers(HttpMethod.GET, "/*")
                 .antMatchers("/actuator/**")
                 .antMatchers("/users/sign-in")
                 .antMatchers("/users/sign-up")

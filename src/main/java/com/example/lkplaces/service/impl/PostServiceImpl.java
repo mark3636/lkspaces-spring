@@ -3,9 +3,12 @@ package com.example.lkplaces.service.impl;
 import com.example.lkplaces.jpa.entity.MapMarker;
 import com.example.lkplaces.jpa.entity.PlaceType;
 import com.example.lkplaces.jpa.entity.Post;
+import com.example.lkplaces.jpa.enums.EnumActionType;
+import com.example.lkplaces.jpa.enums.EnumDomainType;
 import com.example.lkplaces.jpa.enums.EnumStatus;
 import com.example.lkplaces.jpa.repository.PostRepository;
 import com.example.lkplaces.security.CurrentUserProvider;
+import com.example.lkplaces.service.AuditService;
 import com.example.lkplaces.service.MapMarkerService;
 import com.example.lkplaces.service.PlaceTypeService;
 import com.example.lkplaces.service.PostService;
@@ -22,16 +25,19 @@ public class PostServiceImpl implements PostService {
     private final CurrentUserProvider currentUserProvider;
     private final PlaceTypeService placeTypeService;
     private final MapMarkerService mapMarkerService;
+    private final AuditService auditService;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            CurrentUserProvider currentUserProvider,
                            PlaceTypeService placeTypeService,
-                           MapMarkerService mapMarkerService) {
+                           MapMarkerService mapMarkerService,
+                           AuditService auditService) {
         this.postRepository = postRepository;
         this.currentUserProvider = currentUserProvider;
         this.placeTypeService = placeTypeService;
         this.mapMarkerService = mapMarkerService;
+        this.auditService = auditService;
     }
 
     @Override
@@ -47,31 +53,36 @@ public class PostServiceImpl implements PostService {
                 .mapMarker(mapMarker)
                 .author(currentUserProvider.getCurrentUser())
                 .build();
-        return postRepository.save(newPost);
+        newPost = postRepository.save(newPost);
+        auditService.audit(EnumActionType.CREATE, EnumDomainType.POST);
+        return newPost;
     }
 
     @Override
     public Post update(PostDto post) {
         PlaceType placeType = placeTypeService.getById(post.getPlaceTypeId());
         MapMarker mapMarker = post.getMapMarkerId() == null ? null : mapMarkerService.getById(post.getMapMarkerId());
-        Post newPost = Post.builder()
-                .id(post.getId())
-                .label(post.getLabel())
-                .description(post.getDescription())
-                .placeType(placeType)
-                .mapMarker(mapMarker)
-                .build();
-        return postRepository.save(newPost);
+        Post oldPost = getById(post.getId());
+        oldPost.setLabel(post.getLabel());
+        oldPost.setDescription(post.getDescription());
+        oldPost.setPlaceType(placeType);
+        oldPost.setMapMarker(mapMarker);
+        oldPost = postRepository.save(oldPost);
+        auditService.audit(EnumActionType.UPDATE, EnumDomainType.POST);
+        return oldPost;
     }
 
     @Override
     public void delete(Integer id) {
         postRepository.deleteById(id);
+        auditService.audit(EnumActionType.DELETE, EnumDomainType.POST);
     }
 
     @Override
     public Post getById(Integer id) {
-        return postRepository.findById(id).orElse(null);
+        return postRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Пост не найден"));
     }
 
     @Override
@@ -81,8 +92,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post changeStatus(Integer id, EnumStatus status) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Пост не найден"));
+        Post post = getById(id);
         post.setStatus(status);
-        return postRepository.save(post);
+        post = postRepository.save(post);
+        auditService.audit(EnumStatus.APPROVED.equals(status) ? EnumActionType.APPROVE : EnumActionType.REJECT,
+                EnumDomainType.POST);
+        return post;
     }
 }
