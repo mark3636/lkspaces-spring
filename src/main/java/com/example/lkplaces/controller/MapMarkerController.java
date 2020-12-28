@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/map-markers")
+@RequestMapping("/api/map-markers")
 public class MapMarkerController {
     private final MapMarkerService mapMarkerService;
 

@@ -49,11 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers(HttpMethod.GET, "/*")
                 .antMatchers("/actuator/**")
-                .antMatchers("/users/sign-in")
-                .antMatchers("/users/sign-up")
-                .antMatchers(HttpMethod.GET, "/map-markers/**")
-                .antMatchers(HttpMethod.GET, "/posts/**")
-                .antMatchers(HttpMethod.GET, "/place-types/**")
+                .antMatchers("/api/users/sign-in")
+                .antMatchers("/api/users/sign-up")
+                .antMatchers(HttpMethod.GET, "/api/map-markers/**")
+                .antMatchers(HttpMethod.GET, "/api/posts/**")
+                .antMatchers(HttpMethod.GET, "/api/place-types/**")
                 .antMatchers("/error");
     }
 }

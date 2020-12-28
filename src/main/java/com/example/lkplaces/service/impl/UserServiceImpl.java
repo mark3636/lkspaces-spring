@@ -42,9 +42,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        User updatedUser = userRepository.save(existingUser);
+        existingUser.setRole(user.getRole());
+        existingUser = userRepository.save(existingUser);
         auditService.audit(EnumActionType.UPDATE, EnumDomainType.USER);
-        return UserConverter.toDto(updatedUser);
+        return UserConverter.toDto(existingUser);
     }
 
     @Override
