@@ -7,11 +7,14 @@ import com.example.lkplaces.web.validation.NewG;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,5 +46,10 @@ public class UserController {
     @PutMapping("/{id}")
     public UserDto update(@RequestBody UserDto user) {
         return userService.update(user);
+    }
+
+    @PostMapping("/{id}/update-image")
+    public void updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
+        userService.updateImage(id, image);
     }
 }

@@ -19,6 +19,7 @@ public class UserConverter {
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .role(user.getRole())
+                .image(user.getImage())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public class UserConverter {
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .role(user.getRole())
+                .image(user.getImage())
                 .token(token)
                 .build();
     }

@@ -11,12 +11,17 @@ import com.example.lkplaces.service.AuditService;
 import com.example.lkplaces.service.UserService;
 import com.example.lkplaces.web.dto.UserDto;
 import com.example.lkplaces.web.dto.UserWithTokenDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import utils.ImageUtils;
 
+import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -37,9 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto user) {
-        User existingUser = userRepository
-                .findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        User existingUser = getById(user.getId());
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setRole(user.getRole());
@@ -76,5 +79,22 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Неправильный логин или пароль");
         }
         return UserConverter.toDto(existingUser, jwtTokenProvider.createToken(user.getEmail()));
+    }
+
+    @Override
+    public void updateImage(Integer id, MultipartFile image) {
+        User user = getById(id);
+        try {
+            user.setImage(ImageUtils.compressBytes(image.getBytes()));
+            userRepository.save(user);
+        } catch (IOException e) {
+            throw new RuntimeException("Произошла ошибка во время чтения файла");
+        }
+    }
+
+    private User getById(Integer id) {
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
     }
 }

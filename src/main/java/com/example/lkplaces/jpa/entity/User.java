@@ -43,4 +43,6 @@ public class User {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private EnumRole role;
+    @Column(name = "image", length = 2000)
+    private byte[] image;
 }

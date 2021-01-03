@@ -63,7 +63,7 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return new Date().before(claims.getBody().getExpiration());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("");
+            throw new RuntimeException("Failed to parse jwt token");
         }
     }
 

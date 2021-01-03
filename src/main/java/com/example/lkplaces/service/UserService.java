@@ -2,6 +2,7 @@ package com.example.lkplaces.service;
 
 import com.example.lkplaces.web.dto.UserDto;
 import com.example.lkplaces.web.dto.UserWithTokenDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface UserService {
     UserWithTokenDto signUp(UserDto user);
 
     UserWithTokenDto signIn(UserDto user);
+
+    void updateImage(Integer id, MultipartFile image);
 }

@@ -37,4 +37,5 @@ public class UserDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private EnumRole role;
+    private byte[] image;
 }
