@@ -82,11 +82,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateImage(Integer id, MultipartFile image) {
+    public UserDto updateImage(Integer id, MultipartFile image) {
         User user = getById(id);
         try {
             user.setImage(ImageUtils.compressBytes(image.getBytes()));
-            userRepository.save(user);
+            return UserConverter.toDto(userRepository.save(user));
         } catch (IOException e) {
             throw new RuntimeException("Произошла ошибка во время чтения файла");
         }

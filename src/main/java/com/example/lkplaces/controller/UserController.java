@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/update-image")
-    public void updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
-        userService.updateImage(id, image);
+    public UserDto updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
+        return userService.updateImage(id, image);
     }
 }

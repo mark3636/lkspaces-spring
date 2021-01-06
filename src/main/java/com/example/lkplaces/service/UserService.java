@@ -15,5 +15,5 @@ public interface UserService {
 
     UserWithTokenDto signIn(UserDto user);
 
-    void updateImage(Integer id, MultipartFile image);
+    UserDto updateImage(Integer id, MultipartFile image);
 }
