@@ -24,4 +24,5 @@ public class MapMarkerDto {
     private String label;
     private String description;
     private Integer placeTypeId;
+    private byte[] image;
 }

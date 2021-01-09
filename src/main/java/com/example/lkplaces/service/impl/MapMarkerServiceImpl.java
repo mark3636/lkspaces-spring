@@ -12,6 +12,7 @@ import com.example.lkplaces.service.PlaceTypeService;
 import com.example.lkplaces.web.dto.MapMarkerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import utils.ImageUtils;
 
 import java.util.List;
 
@@ -40,9 +41,11 @@ public class MapMarkerServiceImpl implements MapMarkerService {
                 .lng(marker.getLng())
                 .placeType(placeType)
                 .status(EnumStatus.WAITING_FOR_APPROVAL)
+                .image(ImageUtils.compressBytes(marker.getImage()))
                 .build();
         newMarker = mapMarkerRepository.save(newMarker);
         auditService.audit(EnumActionType.CREATE, EnumDomainType.MAP_MARKER);
+        newMarker.setImage(ImageUtils.decompressBytes(newMarker.getImage()));
         return newMarker;
     }
 
@@ -55,8 +58,10 @@ public class MapMarkerServiceImpl implements MapMarkerService {
         oldMarker.setLat(marker.getLat());
         oldMarker.setLng(marker.getLng());
         oldMarker.setPlaceType(placeType);
+        oldMarker.setImage(ImageUtils.compressBytes(marker.getImage()));
         oldMarker = mapMarkerRepository.save(oldMarker);
         auditService.audit(EnumActionType.UPDATE, EnumDomainType.MAP_MARKER);
+        oldMarker.setImage(ImageUtils.decompressBytes(oldMarker.getImage()));
         return oldMarker;
     }
 
@@ -75,17 +80,19 @@ public class MapMarkerServiceImpl implements MapMarkerService {
 
     @Override
     public List<MapMarker> getAll() {
-        return mapMarkerRepository.findAll();
+        List<MapMarker> mapMarkers = mapMarkerRepository.findAll();
+        mapMarkers.forEach(mapMarker -> mapMarker.setImage(ImageUtils.decompressBytes(mapMarker.getImage())));
+        return mapMarkers;
     }
 
     @Override
     public MapMarker changeStatus(Integer id, EnumStatus status) {
-        MapMarker mapMarker = mapMarkerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Маркер не найден"));
+        MapMarker mapMarker = getById(id);
         mapMarker.setStatus(status);
         mapMarker = mapMarkerRepository.save(mapMarker);
         auditService.audit(EnumStatus.APPROVED.equals(status) ? EnumActionType.APPROVE : EnumActionType.REJECT,
                 EnumDomainType.MAP_MARKER);
+        mapMarker.setImage(ImageUtils.decompressBytes(mapMarker.getImage()));
         return mapMarker;
     }
 }

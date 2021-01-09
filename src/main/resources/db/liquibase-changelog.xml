@@ -7,4 +7,5 @@
     <include file="db/patches/v1.0-ddl-create-basic-tables.sql"/>
     <include file="db/patches/v1.1-dml-insert-place-types.sql"/>
     <include file="db/patches/v1.2-ddl-add-image-column-to-user-table.sql"/>
+    <include file="db/patches/v1.3-ddl-add-image-column-to-map-marker-table.sql"/>
 </databaseChangeLog>

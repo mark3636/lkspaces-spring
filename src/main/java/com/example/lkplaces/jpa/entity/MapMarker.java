@@ -48,4 +48,6 @@ public class MapMarker {
     @ManyToOne
     @JoinColumn(name = "id_place_type")
     private PlaceType placeType;
+    @Column(name = "image", length = 2000)
+    private byte[] image;
 }

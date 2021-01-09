@@ -9,12 +9,15 @@ import com.example.lkplaces.web.dto.AuditDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -60,5 +63,21 @@ public class AuditServiceImpl implements AuditService {
         } catch (Exception e) {
             log.error("Failed to invoke audit service", e);
         }
+    }
+
+    @Override
+    public List<Object> getAudit() {
+        try {
+            ResponseEntity<List<Object>> response = webClient.get()
+                    .retrieve()
+                    .toEntityList(Object.class)
+                    .block();
+            if (response != null) {
+                return response.getBody();
+            }
+        } catch (Exception e) {
+            log.error("Failed to invoke audit service", e);
+        }
+        return Collections.emptyList();
     }
 }

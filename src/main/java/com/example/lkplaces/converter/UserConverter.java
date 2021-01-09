@@ -5,6 +5,7 @@ import com.example.lkplaces.web.dto.UserDto;
 import com.example.lkplaces.web.dto.UserWithTokenDto;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import utils.ImageUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class UserConverter {
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .role(user.getRole())
-                .image(user.getImage())
+                .image(ImageUtils.decompressBytes(user.getImage()))
                 .build();
     }
 
@@ -31,7 +32,7 @@ public class UserConverter {
                 .lastName(user.getLastName())
                 .password(user.getPassword())
                 .role(user.getRole())
-                .image(user.getImage())
+                .image(ImageUtils.decompressBytes(user.getImage()))
                 .token(token)
                 .build();
     }
