@@ -27,6 +27,8 @@ public class AuditServiceImpl implements AuditService {
     private WebClient webClient;
     @Value("${lkplaces.audit.url}")
     private String auditServiceURL;
+    @Value("${lkplaces.audit.token}")
+    private String auditServiceToken;
 
     @Autowired
     public AuditServiceImpl(CurrentUserProvider currentUserProvider) {
@@ -35,7 +37,10 @@ public class AuditServiceImpl implements AuditService {
 
     @PostConstruct
     public void initWebClient() {
-        this.webClient = WebClient.create(auditServiceURL);
+        this.webClient = WebClient.builder()
+                .baseUrl(auditServiceURL)
+                .defaultHeader("Authorization", auditServiceToken)
+                .build();
     }
 
     @Override

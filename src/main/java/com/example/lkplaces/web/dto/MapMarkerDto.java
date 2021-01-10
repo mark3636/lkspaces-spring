@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -24,5 +25,4 @@ public class MapMarkerDto {
     private String label;
     private String description;
     private Integer placeTypeId;
-    private byte[] image;
 }

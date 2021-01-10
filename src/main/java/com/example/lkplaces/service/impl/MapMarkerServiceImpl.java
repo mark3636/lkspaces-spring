@@ -10,12 +10,16 @@ import com.example.lkplaces.service.AuditService;
 import com.example.lkplaces.service.MapMarkerService;
 import com.example.lkplaces.service.PlaceTypeService;
 import com.example.lkplaces.web.dto.MapMarkerDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import utils.ImageUtils;
 
+import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 public class MapMarkerServiceImpl implements MapMarkerService {
     private final MapMarkerRepository mapMarkerRepository;
@@ -32,7 +36,7 @@ public class MapMarkerServiceImpl implements MapMarkerService {
     }
 
     @Override
-    public MapMarker add(MapMarkerDto marker) {
+    public MapMarker add(MapMarkerDto marker, MultipartFile image) {
         PlaceType placeType = placeTypeService.getById(marker.getPlaceTypeId());
         MapMarker newMarker = MapMarker.builder()
                 .label(marker.getLabel())
@@ -41,8 +45,14 @@ public class MapMarkerServiceImpl implements MapMarkerService {
                 .lng(marker.getLng())
                 .placeType(placeType)
                 .status(EnumStatus.WAITING_FOR_APPROVAL)
-                .image(ImageUtils.compressBytes(marker.getImage()))
                 .build();
+        if (image != null) {
+            try {
+                newMarker.setImage(ImageUtils.compressBytes(image.getBytes()));
+            } catch (IOException e) {
+                log.error("Failed to retrieve an image");
+            }
+        }
         newMarker = mapMarkerRepository.save(newMarker);
         auditService.audit(EnumActionType.CREATE, EnumDomainType.MAP_MARKER);
         newMarker.setImage(ImageUtils.decompressBytes(newMarker.getImage()));
@@ -50,7 +60,7 @@ public class MapMarkerServiceImpl implements MapMarkerService {
     }
 
     @Override
-    public MapMarker update(MapMarkerDto marker) {
+    public MapMarker update(MapMarkerDto marker, MultipartFile image) {
         PlaceType placeType = placeTypeService.getById(marker.getPlaceTypeId());
         MapMarker oldMarker = getById(marker.getId());
         oldMarker.setLabel(marker.getLabel());
@@ -58,7 +68,13 @@ public class MapMarkerServiceImpl implements MapMarkerService {
         oldMarker.setLat(marker.getLat());
         oldMarker.setLng(marker.getLng());
         oldMarker.setPlaceType(placeType);
-        oldMarker.setImage(ImageUtils.compressBytes(marker.getImage()));
+        if (image != null) {
+            try {
+                oldMarker.setImage(ImageUtils.compressBytes(image.getBytes()));
+            } catch (IOException e) {
+                log.error("Failed to retrieve an image");
+            }
+        }
         oldMarker = mapMarkerRepository.save(oldMarker);
         auditService.audit(EnumActionType.UPDATE, EnumDomainType.MAP_MARKER);
         oldMarker.setImage(ImageUtils.decompressBytes(oldMarker.getImage()));
