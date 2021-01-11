@@ -42,13 +42,13 @@ public class MapMarkerController {
     }
 
     @PostMapping
-    public MapMarker add(@RequestParam String mapMarker, @RequestParam MultipartFile image) throws JsonProcessingException {
+    public MapMarker add(@RequestParam String mapMarker, @RequestParam(required = false) MultipartFile image) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return mapMarkerService.add(objectMapper.readValue(mapMarker, MapMarkerDto.class), image);
     }
 
     @PutMapping("/{id}")
-    public MapMarker update(@RequestParam String mapMarker, @RequestParam MultipartFile image) throws JsonProcessingException {
+    public MapMarker update(@RequestParam String mapMarker, @RequestParam(required = false) MultipartFile image) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return mapMarkerService.update(objectMapper.readValue(mapMarker, MapMarkerDto.class), image);
     }
